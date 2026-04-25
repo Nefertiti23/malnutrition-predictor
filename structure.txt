@@ -1,0 +1,67 @@
+project-name/
+├── frontend/                 # React.js + Chart.js
+│   ├── public/
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── Charts/
+│   │   │   ├── Layout/
+│   │   │   └── Upload/
+│   │   ├── pages/
+│   │   ├── services/
+│   │   │   └── api.js      # calls to FastAPI backend
+│   │   ├── App.js
+│   │   └── index.js
+│   ├── package.json
+│   └── README.md
+│
+├── backend/                  # FastAPI
+│   ├── app/
+│   │   ├── api/
+│   │   │   ├── routes/
+│   │   │   │   ├── predict.py
+│   │   │   │   ├── train.py
+│   │   │   │   └── upload.py
+│   │   │   └── dependencies.py
+│   │   ├── core/
+│   │   │   ├── config.py
+│   │   │   └── security.py
+│   │   ├── models/          # Pydantic schemas (not ML models)
+│   │   │   └── schemas.py
+│   │   └── main.py
+│   ├── requirements.txt
+│   └── Dockerfile
+│
+├── ml/                       # Your original ML structure + more
+│   ├── data/
+│   │   ├── raw/
+│   │   ├── processed/
+│   │   └── external/
+│   ├── notebooks/           # Exploration (kept separate from frontend)
+│   ├── src/
+│   │   ├── data/
+│   │   │   └── make_dataset.py
+│   │   ├── features/
+│   │   │   └── build_features.py
+│   │   ├── models/
+│   │   │   ├── train_model.py
+│   │   │   └── predict_model.py
+│   │   └── utils/
+│   │       └── helpers.py
+│   ├── models/              # Saved trained models (.pkl, .joblib)
+│   ├── configs/
+│   │   └── model_config.yaml
+│   ├── tests/
+│   │   ├── test_data.py
+│   │   └── test_models.py
+│   └── requirements.txt
+│
+├── deployment/
+│   ├── vercel.json          # Frontend deployment (Vercel)
+│   ├── render.yaml          # Backend deployment (Render)
+│   └── streamlit/           # Prototype (optional, keep separate)
+│       └── app.py
+│
+├── docker-compose.yml       # For local full-stack dev
+├── .env.example
+├── .gitignore
+└── README.md
