@@ -1,0 +1,15 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pkl
+.env
+
+# Data (processed only — keep raw)
+data/processed/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# OS
+.DS_Store
+Thumbs.db
