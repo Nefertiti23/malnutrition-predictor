@@ -6,6 +6,8 @@ __pycache__/
 
 # Data (processed only — keep raw)
 data/processed/
+ml/data/raw/hh_combined.csv
+ml/data/raw/hl_combined.csv
 
 # Jupyter
 .ipynb_checkpoints/
