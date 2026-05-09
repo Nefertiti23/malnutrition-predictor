@@ -12,7 +12,7 @@ ml/data/raw/hl_combined.csv
 
 # Jupyter
 .ipynb_checkpoints/
-.jupyter/
+ml/.jupyter/
 
 # OS
 .DS_Store
