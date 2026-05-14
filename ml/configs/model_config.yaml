@@ -1,0 +1,11 @@
+random_forest:
+  n_estimators: 100
+  random_state: 42
+  n_jobs: -1
+
+xgboost:
+  n_estimators: 2
+  max_depth: 2
+  learning_rate: 1
+
+lightgbm: {}

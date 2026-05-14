@@ -1,7 +1,44 @@
 import pandas as pd
+import pyreadstat
 
-def clean_ch(raw_path):
-    ch = pd.read_csv(raw_path, low_memory=False)
+def make_combined(raw_path):
+
+    # ---- BALOCHISTAN ----
+    ch_bal, _ = pyreadstat.read_sav(f"{raw_path}/balochistan/ch_bal.sav")
+    hh_bal, _ = pyreadstat.read_sav(f"{raw_path}/balochistan/hh_bal.sav")
+    hl_bal, _ = pyreadstat.read_sav(f"{raw_path}/balochistan/hl_bal.sav")
+    ch_bal["province"] = "Balochistan"
+    hh_bal["province"] = "Balochistan"
+    hl_bal["province"] = "Balochistan"
+
+    # ---- KPK ----
+    ch_kpk, _ = pyreadstat.read_sav(f"{raw_path}/kpk/ch_kpk.sav")
+    hh_kpk, _ = pyreadstat.read_sav(f"{raw_path}/kpk/hh_kpk.sav")
+    hl_kpk, _ = pyreadstat.read_sav(f"{raw_path}/kpk/hl_kpk.sav")
+    ch_kpk["province"] = "KPK"
+    hh_kpk["province"] = "KPK"
+    hl_kpk["province"] = "KPK"
+
+    # ---- SINDH ----
+    ch_sindh, _ = pyreadstat.read_sav(f"{raw_path}/sindh/ch_sindh.sav")
+    hh_sindh, _ = pyreadstat.read_sav(f"{raw_path}/sindh/hh_sindh.sav")
+    hl_sindh, _ = pyreadstat.read_sav(f"{raw_path}/sindh/hl_sindh.sav")
+    ch_sindh["province"] = "Sindh"
+    hh_sindh["province"] = "Sindh"
+    hl_sindh["province"] = "Sindh"
+
+    # ---- COMBINE all 3 provinces ----
+    ch_all = pd.concat([ch_bal, ch_kpk, ch_sindh], ignore_index=True)
+    hh_all = pd.concat([hh_bal, hh_kpk, hh_sindh], ignore_index=True)
+    hl_all = pd.concat([hl_bal, hl_kpk, hl_sindh], ignore_index=True)
+
+    # ---- Save to CSV ----
+    ch_all.to_csv(f"{raw_path}/ch_combined.csv", index=False)
+    hh_all.to_csv(f"{raw_path}/hh_combined.csv", index=False)
+    hl_all.to_csv(f"{raw_path}/hl_combined.csv", index=False)
+
+def clean_ch(clean_path):
+    ch = pd.read_csv(clean_path, low_memory=False)
 
     cols = ['HH1','HH2','CAGE','HL4','BR2','BR3','HAZ','WAZ',
         'WHZ','HAZ2','WAZ2','WHZ2','melevel','HH6','HH7',
@@ -31,8 +68,8 @@ def clean_ch(raw_path):
 
     return df
 
-def clean_hh(raw_path):
-    hh = pd.read_csv(raw_path, low_memory=False)
+def clean_hh(clean_path):
+    hh = pd.read_csv(clean_path, low_memory=False)
 
     cols_to_keep = [
         'HH1', 'HH2',          # Merge keys (Cluster & Household)
@@ -69,8 +106,8 @@ def clean_hh(raw_path):
 
     return df
 
-def clean_hl(raw_path):
-    hl = pd.read_csv(raw_path, low_memory=False)
+def clean_hl(clean_path):
+    hl = pd.read_csv(clean_path, low_memory=False)
 
     cols_to_keep = [
         'HH1', 'HH2',           # Merge keys
@@ -122,10 +159,13 @@ def combine(ch, hh, hl):
     merged = merged.drop(columns=['mother_education_y'])
     merged = merged.rename(columns={'mother_education_x': 'mother_education'})
 
+    return merged
+
 def run_pipeline(raw_dir, output_path):
     ch = clean_ch(f"{raw_dir}/ch_combined.csv")
     hh = clean_hh(f"{raw_dir}/hh_combined.csv")
     hl = clean_hl(f"{raw_dir}/hl_combined.csv")
+
     final = combine(ch, hh, hl)
 
     final = final[(final['haz_score'] >= -6) & (final['haz_score'] <= 6)]
@@ -137,4 +177,5 @@ def run_pipeline(raw_dir, output_path):
 
 
 if __name__ == "__main__":
-    run_pipeline("data/processed", "data/processed/final_dataset_clean.csv")
+    # make_combined("data/raw")
+    run_pipeline("data/raw", "data/processed/final_dataset_clean.csv")

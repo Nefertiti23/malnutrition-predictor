@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 import xgboost as xgb
 import lightgbm as lgb
+import yaml
 
 from xgboost import XGBClassifier
 from sklearn.model_selection import train_test_split
@@ -10,6 +11,9 @@ from sklearn.datasets import make_classification
 from sklearn.metrics import (accuracy_score, f1_score, precision_score,
                               recall_score, confusion_matrix,
                               roc_auc_score, classification_report)
+
+with open("configs/model_config.yaml") as f:
+    config = yaml.safe_load(f)
 
 def get_dataset(path):
     df = pd.read_csv(path)
@@ -38,19 +42,19 @@ def split_data(X, y):
 
 def train_random_forest(X_train, y_train):
     # create an instance of random forest model
-    rf = RandomForestClassifier(n_estimators=100, random_state=42, n_jobs=-1)
+    rf = RandomForestClassifier(**config['random_forest'])
     rf.fit(X_train, y_train)
 
     return rf
 
 def train_xgboost(X_train, y_train):
-    bst = XGBClassifier(n_estimators=2, max_depth=2, learning_rate=1, objective='binary:logistic')
+    bst = XGBClassifier(**config['xgboost'])
     bst.fit(X_train, y_train)
 
     return bst
 
 def train_lightgbm(X_train, y_train):
-    clf = lgb.LGBMClassifier()
+    clf = lgb.LGBMClassifier(**config['lightgbm'])
     clf.fit(X_train, y_train)
 
     return clf
