@@ -7,6 +7,7 @@ ml/proj-venv/
 
 # Data (processed only — keep raw)
 data/processed/
+ml/data/raw/ch_combined.csv
 ml/data/raw/hh_combined.csv
 ml/data/raw/hl_combined.csv
 
