@@ -22,8 +22,16 @@ def get_dataset(path):
 
 def make_features(df):
     # X = features
-    # dropping target column, and columns not required for model training
-    X = df.drop(['stunted', 'cluster_id', 'household_id'], axis=1)
+    # keeping only realistic features from dataset
+    features = [
+        'child_age_months',
+        'mother_education',
+        'wealth_index',
+        'urban_rural',
+        'province'
+    ]
+
+    X = df[features]
 
     # y = target
     y = df['stunted']
@@ -102,14 +110,18 @@ if __name__ == "__main__":
     X, y = make_features(df)
     X_train, X_test, y_train, y_test = split_data(X, y)
 
-    # Train
-    models = train_all_models(X_train, y_train)
+    # Train best model -- lightgbm
+    model = train_lightgbm(X_train, y_train)
 
     # Evaluate
-    evaluate_all_models(models, X_test, y_test)
+    evaluate_model(model, X_test, y_test)
 
      # Save
-    for name, model in models.items():
-        filename = name.lower().replace(" ", "_")
-        joblib.dump(model, f"models/{filename}.joblib")
-        print(f"Saved to models/{filename}.joblib")
+    # for name, model in models.items():
+    #     filename = name.lower().replace(" ", "_")
+    #     joblib.dump(model, f"models/{filename}.joblib")
+    #     print(f"Saved to models/{filename}.joblib")
+
+    filename = model.name.lower().replace(" ", "_")
+    joblib.dump(model, f"models/{filename}.joblib")
+    print(f"Saved to models/{filename}.joblib")
