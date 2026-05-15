@@ -6,7 +6,7 @@ import TheForm from './components/predictor-form/TheForm.vue';
   <header>
     <h1>Child Stunting Predictor</h1>
     <p>
-      This predictor uses the LightGBM model, and has been trained on dataset containting
+      This predictor uses the LightGBM model, and has been trained on datasets containting
       records of children from Balochistan, Sindh and KPK.
     </p>
 
@@ -32,13 +32,18 @@ header {
 
 @media (min-width: 1024px) {
   header {
-    border: solid blanchedalmond 2px;
+    /* border: solid blanchedalmond 1px; */
     display: flex;
     flex-direction: column;
     place-items: center;
     h1 {
-      padding-bottom: 20px;
+      padding-bottom: 8px;
       font-weight: bold;
+      color: #E0AAFF;
+    }
+    p {
+      margin: 0 16rem;
+      text-align: center;
     }
   }
 
