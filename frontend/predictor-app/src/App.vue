@@ -1,5 +1,6 @@
 <script setup>
 import TheForm from './components/predictor-form/TheForm.vue';
+import './assets/base.css';
 </script>
 
 <template>
@@ -36,15 +37,17 @@ header {
     display: flex;
     flex-direction: column;
     place-items: center;
-    h1 {
-      padding-bottom: 8px;
-      font-weight: bold;
-      color: #E0AAFF;
-    }
-    p {
-      margin: 0 16rem;
-      text-align: center;
-    }
+  }
+
+  header h1 {
+    padding-bottom: 8px;
+    font-weight: bold;
+    color: var(--color-heading);
+  }
+  
+  header p {
+    margin: 0 16rem;
+    text-align: center;
   }
 
   .logo {
@@ -55,6 +58,10 @@ header {
     display: flex;
     place-items: flex-start;
     flex-wrap: wrap;
+  }
+
+  main {
+    color: var(--color-text);
   }
 }
 </style>
