@@ -1,0 +1,42 @@
+.toggle-bar {
+    width: max-content;
+    margin: auto;
+
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.toggle-bar button {
+    background-color: var(--color-background);
+    color: var(--color-text);
+    padding: 12px 20px;
+
+    border: 2px solid black;
+    border-radius: 6px;
+
+    font-size: 14px;
+    font-weight: 500;
+    margin: 6px auto;
+
+    box-shadow: 4px 4px black;
+}
+
+.toggle-bar button:hover {
+    background-color: var(--color-button-primary);
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px black;
+}
+
+.toggle-bar button:active {
+    background-color: rgba(0, 0, 0, 0.08);
+    transform: translate(4px, 4px);
+    box-shadow: none;
+}
+
+.toggle-bar button.active {
+    background-color: var(--color-text);
+    color: var(--color-background);
+    box-shadow: none;
+    transform: translate(4px, 4px);
+}

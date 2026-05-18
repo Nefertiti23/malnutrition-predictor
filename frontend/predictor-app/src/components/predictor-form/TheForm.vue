@@ -103,7 +103,7 @@ async function handlePrediction() {
     </div>
 
     <div v-if="predictionResult !== null" class="result-box" style="margin-top: 25px; padding: 15px; border: 2px solid green; text-align: center; border-radius: 8px; background-color: #f0fff0;">
-      <h3 style="color: green; margin: 0;">Prediction Output: {{ predictionResult }}</h3>
+      <h3 style="color: green; margin: 0;">Prediction Output: <span style="font-weight: bold;"> {{Boolean(predictionResult)}}</span></h3>
       <p style="margin: 5px 0 0 0; color: #333;">
         {{ predictionResult === 1 ? 'High Risk of Child Stunting detected.' : 'Low/Normal Risk of Child Stunting detected.' }}
       </p>
