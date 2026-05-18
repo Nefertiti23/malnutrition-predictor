@@ -5,11 +5,9 @@ __pycache__/
 .env
 ml/proj-venv/
 
-# Data (processed only — keep raw)
-data/processed/
-ml/data/raw/hh_combined.csv
-ml/data/raw/hl_combined.csv
-ml/data/raw/ch_combined.csv
+# Data
+ml/data/processed/
+ml/data/raw/
 
 # Jupyter
 .ipynb_checkpoints/
@@ -18,4 +16,3 @@ ml/.jupyter/
 # OS
 .DS_Store
 Thumbs.db
-*.csv
