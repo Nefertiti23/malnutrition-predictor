@@ -2,10 +2,12 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import joblib
 import numpy as np
+import os
 
 app = Flask(__name__)
 CORS(app) 
-MODEL_PATH = "ml/models/random_forest.joblib"
+# Get the absolute path to the model relative to this script
+MODEL_PATH = os.path.join(os.path.dirname(__file__), "..", "ml", "models", "lightgbm.joblib")
 model = joblib.load(MODEL_PATH)
 
 @app.route('/predict', methods=['POST'])

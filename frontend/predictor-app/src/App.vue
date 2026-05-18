@@ -1,14 +1,20 @@
 <script setup>
+import { ref } from 'vue';
 import TheForm from './components/predictor-form/TheForm.vue';
 import './assets/base.css';
+import './assets/main.css'
+
+const activeTab = ref('predictor');
 </script>
 
 <template>
   <header>
-    <h1>Child Stunting Predictor</h1>
+    <h1>{{ activeTab === 'dashboard' ? 'Child Stunting Dashboard' : 'Child Stunting Predictor' }}</h1>
     <p>
-      This predictor uses the LightGBM model, and has been trained on datasets containting
-      records of children from Balochistan, Sindh and KPK.
+      {{ activeTab === 'dashboard' ? 
+      'This dashboard presents the EDA methods performed on the child stunting dataset, exploring the various trends in the child stunting data.' : 
+      'This predictor uses the LightGBM model, and has been trained on datasets containing records of children from Balochistan, Sindh and KPK.' 
+       }}
     </p>
 
     <!-- <div class="wrapper">
@@ -17,7 +23,23 @@ import './assets/base.css';
   </header>
 
   <main>
-    <TheForm />
+
+    <div class="toggle-bar">
+      <button 
+        :class="{ active: activeTab === 'dashboard' }"
+        @click="activeTab = 'dashboard'"
+      >
+        Dashboard
+      </button>
+      <button 
+        :class="{ active: activeTab === 'predictor' }"
+        @click="activeTab = 'predictor'"
+      >
+        Predictor
+      </button>
+    </div>
+
+    <TheForm v-if="activeTab === 'predictor'" />
   </main>
 </template>
 
@@ -33,10 +55,14 @@ header {
 
 @media (min-width: 1024px) {
   header {
-    /* border: solid blanchedalmond 1px; */
+    margin: 20px auto;
+    width: 40rem;
+
     display: flex;
     flex-direction: column;
+
     place-items: center;
+    
   }
 
   header h1 {
@@ -46,7 +72,6 @@ header {
   }
   
   header p {
-    margin: 0 16rem;
     text-align: center;
   }
 
