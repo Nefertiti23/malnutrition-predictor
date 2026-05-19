@@ -3,80 +3,106 @@ from flask_cors import CORS
 import joblib
 import numpy as np
 import os
-from dotenv import load_dotenv
-
-# Load environment variables
-load_dotenv()
+import pandas as pd
 
 app = Flask(__name__)
+# Absolute wild-card CORS registration to accept any dynamic ports (5173 to 5176+)
+CORS(app, resources={r"/*": {"origins": "*"}}) 
 
-# Allow CORS for all origins (since frontend is on Vercel)
-CORS(app, resources={
-    r"/*": {
-        "origins": "*",
-        "methods": ["GET", "POST", "OPTIONS"],
-        "allow_headers": ["Content-Type"]
-    }
-})
-
+# 1. Load the ML Model
 MODEL_PATH = os.path.join(os.path.dirname(__file__), "..", "ml", "models", "lightgbm.joblib")
+model = joblib.load(MODEL_PATH)
 
+# 2. Load the Cleaned Dataset
+DATA_PATH = os.path.join(os.path.dirname(__file__), "..", "ml", "data", "processed", "final_dataset_clean.csv")
 try:
-    model = joblib.load(MODEL_PATH)
+    df = pd.read_csv(DATA_PATH)
+    print("SUCCESS: Dataset loaded perfectly from absolute path!")
 except Exception as e:
-    print(f"Error loading model: {e}")
-    model = None
+    print(f"Warning: Could not load dataset. Error: {e}")
+    df = None
 
 
-@app.route('/', methods=['GET'])
-def health():
-    return jsonify({'status': 'ok'})
-
-
-# Vercel mounts this file at /api, so routes are "/" not "/predict".
-@app.route('/', methods=['POST'])
+@app.route('/', methods=['POST', 'OPTIONS'])
 def predict():
+    # Handle preflight CORS requests explicitly
+    if request.method == 'OPTIONS':
+        return jsonify({'status': 'ok'}), 200
+        
     try:
-        if model is None:
-            return jsonify({'error': 'Model not loaded'}), 500
-
         data = request.get_json()
-
+        
         age = float(data['child_age_months'])
         education = float(data['mother_education'])
         wealth = float(data['wealth_index'])
         urban_rural = float(data['urban_rural'])
         province = float(data['province'])
-
+        
         features = np.array([[age, education, wealth, urban_rural, province]])
         prediction = model.predict(features)[0]
-
+        
         return jsonify({'prediction': int(prediction)})
-
+        
     except Exception as e:
         return jsonify({'error': str(e)}), 400
 
 
 @app.route('/dashboard-stats', methods=['GET'])
-def dashboard_stats():
-    """Return dashboard statistics"""
+def get_dashboard_stats():
+    if df is None:
+        return jsonify({"status": "error", "message": "Dataset file not found."}), 500
+        
     try:
+        # Match your notebook target stunting column name
+        target_col = 'stunted' if 'stunted' in df.columns else df.columns[-1]
+        
+        # 1. Group Province Safely
+        province_stats = {}
+        prov_col = 'province' if 'province' in df.columns else None
+        if prov_col:
+            for k, group in df.groupby(prov_col):
+                try:
+                    clean_key = str(int(float(k)))
+                except Exception:
+                    clean_key = str(k)
+                province_stats[clean_key] = float(group[target_col].mean())
+        
+        # 2. Group Wealth Index or House Quality Safely if wealth_index is missing
+        wealth_stats = {}
+        wealth_col = 'wealth_index' if 'wealth_index' in df.columns else ('housing_quality' if 'housing_quality' in df.columns else None)
+        if wealth_col:
+            for k, group in df.groupby(wealth_col):
+                try:
+                    clean_key = str(int(float(k)))
+                except Exception:
+                    clean_key = str(k)
+                wealth_stats[clean_key] = float(group[target_col].mean())
+        
+        # 3. Aggregations Summary
+        total_records = len(df)
+        high_risk_percentage = float(df[target_col].mean() * 100) if target_col in df.columns else 0.0
+
         return jsonify({
-            'status': 'success',
-            'summary': {
-                'total_cases_analyzed': 1000,
-                'average_risk_rate': 45.2
+            "status": "success",
+            "summary": {
+                "total_cases_analyzed": total_records,
+                "average_risk_rate": round(high_risk_percentage, 2)
             },
-            'charts': {
-                'provinces': {
-                    'labels': ['0', '1', '2'],
-                    'data': [45.2, 38.5, 52.1]
+            "charts": {
+                "provinces": {
+                    "labels": list(province_stats.keys()) if province_stats else ["No Data"],
+                    "data": [round(val * 100, 2) for val in province_stats.values()] if province_stats else [0]
                 },
-                'wealthTiers': {
-                    'labels': ['1', '2', '3', '4', '5'],
-                    'data': [65.3, 52.1, 45.2, 32.8, 18.5]
+                "wealthTiers": {
+                    "labels": list(wealth_stats.keys()) if wealth_stats else ["No Data"],
+                    "data": [round(val * 100, 2) for val in wealth_stats.values()] if wealth_stats else [0]
                 }
             }
-        })
+        }), 200
+
     except Exception as e:
-        return jsonify({'error': str(e)}), 400
+        return jsonify({"status": "error", "message": str(e)}), 500
+
+
+if __name__ == '__main__':
+    app.run(host='127.0.0.1', port=5000, debug=True)
