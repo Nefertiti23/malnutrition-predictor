@@ -7,8 +7,8 @@ __pycache__/
 ml/proj-venv/
 
 # Data
-ml/data/processed/
-ml/data/raw/
+ml/data/processed
+ml/data/raw
 
 # Jupyter
 .ipynb_checkpoints/
