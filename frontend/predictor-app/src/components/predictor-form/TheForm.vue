@@ -29,8 +29,9 @@ async function handlePrediction() {
   }
 
   try {
-    const apiUrl = import.meta.env.VITE_API_URL || '/'
-    const response = await fetch(`${apiUrl}`, {
+    const apiUrl = import.meta.env.VITE_API_URL || '/api'
+    const endpoint = apiUrl === '/api' ? `${apiUrl}` : `${apiUrl}/predict`
+    const response = await fetch(endpoint, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
