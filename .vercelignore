@@ -1,0 +1,13 @@
+# Large / non-runtime paths — keep out of the deployment upload
+ml/data
+ml/notebooks
+ml/src
+ml/tests
+ml/models/random_forest.joblib
+ml/models/xgboost.joblib
+frontend/predictor-app/node_modules
+frontend/predictor-app/.vite
+**/__pycache__
+**/.ipynb_checkpoints
+**/*.pyc
+.git

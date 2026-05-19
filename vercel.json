@@ -3,8 +3,11 @@
   "buildCommand": "cd frontend/predictor-app && npm ci && npm run build",
   "outputDirectory": "frontend/predictor-app/dist",
   "functions": {
+    "api/**/*.py": {
+      "excludeFiles": "{ml/**,frontend/**,**/*.ipynb,**/*.sav,**/*.csv,**/*.png,**/*.parquet,**/__pycache__/**,**/.ipynb_checkpoints/**}"
+    },
     "api/predict.py": {
-      "includeFiles": "ml/models/lightgbm.joblib"
+      "includeFiles": "api/models/lightgbm.joblib"
     }
   }
 }

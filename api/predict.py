@@ -8,7 +8,7 @@ app = Flask(__name__)
 CORS(app)
 
 # Get the model path
-MODEL_PATH = os.path.join(os.path.dirname(__file__), "..", "ml", "models", "lightgbm.joblib")
+MODEL_PATH = os.path.join(os.path.dirname(__file__), "models", "lightgbm.joblib")
 
 try:
     model = joblib.load(MODEL_PATH)
