@@ -1,0 +1,26 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "api/predict.py",
+      "use": "@vercel/python"
+    },
+    {
+      "src": "frontend/predictor-app/package.json",
+      "use": "@vercel/node",
+      "config": {
+        "buildCommand": "npm run build"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/predict.py"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/frontend/predictor-app/dist/$1"
+    }
+  ]
+}

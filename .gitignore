@@ -16,3 +16,9 @@ ml/.jupyter/
 # OS
 .DS_Store
 Thumbs.db
+
+# Node/Frontend
+frontend/predictor-app/node_modules/
+frontend/predictor-app/dist/
+.vercel/
+*.log

@@ -29,7 +29,7 @@ async function handlePrediction() {
   }
 
   try {
-    const response = await fetch('http://127.0.0.1:5000/predict', {
+    const response = await fetch('/api/predict', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -41,12 +41,12 @@ async function handlePrediction() {
       throw new Error('Backend server returned an error error.')
     }
 
-    const data = await response.get_json ? await response.get_json() : await response.json()
+    const data = await response.json()
     
     // Save the output (0 or 1) returned from LightGBM
     predictionResult.value = data.prediction
   } catch (error) {
-    errorMessage.value = 'Could not connect to the backend server. Make sure app.py is running!'
+    errorMessage.value = 'Could not connect to the backend API. Please try again.'
     console.error(error)
   } finally {
     isLoading.value = false
