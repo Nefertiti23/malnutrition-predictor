@@ -23,7 +23,7 @@ except Exception as e:
     df = None
 
 
-@app.route('/predict', methods=['POST', 'OPTIONS'])
+@app.route('/', methods=['POST', 'OPTIONS'])  # Change from /predict to /
 def predict():
     # Handle preflight CORS requests explicitly
     if request.method == 'OPTIONS':
@@ -47,7 +47,7 @@ def predict():
         return jsonify({'error': str(e)}), 400
 
 
-@app.route('/dashboard-stats', methods=['GET'])
+@app.route('/dashboard-stats', methods=['GET'])  # Change from /api/dashboard-stats to /dashboard-stats
 def get_dashboard_stats():
     if df is None:
         return jsonify({"status": "error", "message": "Dataset file not found."}), 500
