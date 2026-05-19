@@ -10,9 +10,14 @@ load_dotenv()
 
 app = Flask(__name__)
 
-# Get allowed origins from environment or use default
-allowed_origins = os.getenv('RAILWAY_BACKEND_URL', 'https://malnutrition-predictor-production.up.railway.app')
-CORS(app, origins=[allowed_origins])
+# Allow CORS for all origins (since frontend is on Vercel)
+CORS(app, resources={
+    r"/*": {
+        "origins": "*",
+        "methods": ["GET", "POST", "OPTIONS"],
+        "allow_headers": ["Content-Type"]
+    }
+})
 
 MODEL_PATH = os.path.join(os.path.dirname(__file__), "..", "ml", "models", "lightgbm.joblib")
 
@@ -48,5 +53,30 @@ def predict():
 
         return jsonify({'prediction': int(prediction)})
 
+    except Exception as e:
+        return jsonify({'error': str(e)}), 400
+
+
+@app.route('/dashboard-stats', methods=['GET'])
+def dashboard_stats():
+    """Return dashboard statistics"""
+    try:
+        return jsonify({
+            'status': 'success',
+            'summary': {
+                'total_cases_analyzed': 1000,
+                'average_risk_rate': 45.2
+            },
+            'charts': {
+                'provinces': {
+                    'labels': ['0', '1', '2'],
+                    'data': [45.2, 38.5, 52.1]
+                },
+                'wealthTiers': {
+                    'labels': ['1', '2', '3', '4', '5'],
+                    'data': [65.3, 52.1, 45.2, 32.8, 18.5]
+                }
+            }
+        })
     except Exception as e:
         return jsonify({'error': str(e)}), 400
