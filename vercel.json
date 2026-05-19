@@ -6,7 +6,7 @@
     "api/**/*.py": {
       "excludeFiles": "{ml/**,frontend/**,**/*.ipynb,**/*.sav,**/*.csv,**/*.png,**/*.parquet,**/__pycache__/**,**/.ipynb_checkpoints/**}"
     },
-    "api/predict.py": {
+    "api/index.py": {
       "includeFiles": "api/models/lightgbm.joblib"
     }
   }
