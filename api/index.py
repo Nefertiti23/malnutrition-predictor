@@ -14,7 +14,7 @@ MODEL_PATH = os.path.join(os.path.dirname(__file__), "..", "ml", "models", "ligh
 model = joblib.load(MODEL_PATH)
 
 # 2. Load the Cleaned Dataset
-DATA_PATH = os.path.join(os.path.dirname(__file__), "..", "ml", "data", "processed", "final_dataset_clean.csv")
+DATA_PATH = os.path.join(os.path.dirname(__file__), "..", "ml", "data", "final_dataset_clean.csv")
 try:
     df = pd.read_csv(DATA_PATH)
     print("SUCCESS: Dataset loaded perfectly from absolute path!")
