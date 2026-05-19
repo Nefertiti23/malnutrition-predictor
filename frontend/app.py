@@ -47,7 +47,7 @@ def predict():
         return jsonify({'error': str(e)}), 400
 
 
-@app.route('/api/dashboard-stats', methods=['GET'])
+@app.route('/dashboard-stats', methods=['GET'])
 def get_dashboard_stats():
     if df is None:
         return jsonify({"status": "error", "message": "Dataset file not found."}), 500
