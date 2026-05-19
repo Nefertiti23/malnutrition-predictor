@@ -4,10 +4,8 @@
   "outputDirectory": "frontend/predictor-app/dist",
   "functions": {
     "api/**/*.py": {
-      "excludeFiles": "{ml/**,frontend/**,**/*.ipynb,**/*.sav,**/*.csv,**/*.png,**/*.parquet,**/__pycache__/**,**/.ipynb_checkpoints/**}"
-    },
-    "api/index.py": {
-      "includeFiles": "api/models/lightgbm.joblib"
+      "excludeFiles": "{frontend/**,**/*.ipynb,**/*.sav,**/*.csv,**/*.png,**/*.parquet,**/__pycache__/**,**/.ipynb_checkpoints/**}",
+      "includeFiles": "ml/models/lightgbm.joblib"
     }
   }
 }
