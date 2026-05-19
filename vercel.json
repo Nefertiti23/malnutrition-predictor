@@ -1,26 +1,10 @@
 {
-  "version": 2,
-  "builds": [
-    {
-      "src": "api/predict.py",
-      "use": "@vercel/python"
-    },
-    {
-      "src": "frontend/predictor-app/package.json",
-      "use": "@vercel/node",
-      "config": {
-        "buildCommand": "npm run build"
-      }
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "buildCommand": "cd frontend/predictor-app && npm ci && npm run build",
+  "outputDirectory": "frontend/predictor-app/dist",
+  "functions": {
+    "api/predict.py": {
+      "includeFiles": "ml/models/lightgbm.joblib"
     }
-  ],
-  "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "/api/predict.py"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/frontend/predictor-app/dist/$1"
-    }
-  ]
+  }
 }

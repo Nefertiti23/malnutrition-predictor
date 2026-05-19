@@ -20,7 +20,9 @@ except Exception as e:
 def health():
     return jsonify({'status': 'ok'})
 
-@app.route('/predict', methods=['POST'])
+
+# Vercel mounts this file at /api/predict, so POST must target "/" not "/predict".
+@app.route('/', methods=['POST'])
 def predict():
     try:
         if model is None:
