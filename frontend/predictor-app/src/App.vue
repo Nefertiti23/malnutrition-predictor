@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue';
 import TheForm from './components/predictor-form/TheForm.vue';
+import Dashboard from './components/dashboard/Dashboard.vue';
 import './assets/base.css';
 import './assets/main.css'
 
@@ -40,6 +41,8 @@ const activeTab = ref('predictor');
     </div>
 
     <TheForm v-if="activeTab === 'predictor'" />
+    <Dashboard v-if="activeTab === 'dashboard'" />
+    
   </main>
 </template>
 

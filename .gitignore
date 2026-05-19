@@ -3,6 +3,7 @@ __pycache__/
 *.py[cod]
 *.pkl
 .env
+.env.local
 ml/proj-venv/
 
 # Data

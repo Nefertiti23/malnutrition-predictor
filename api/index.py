@@ -3,9 +3,16 @@ from flask_cors import CORS
 import joblib
 import numpy as np
 import os
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
 
 app = Flask(__name__)
-CORS(app)
+
+# Get allowed origins from environment or use default
+allowed_origins = os.getenv('RAILWAY_BACKEND_URL', 'https://malnutrition-predictor-production.up.railway.app')
+CORS(app, origins=[allowed_origins])
 
 MODEL_PATH = os.path.join(os.path.dirname(__file__), "..", "ml", "models", "lightgbm.joblib")
 
