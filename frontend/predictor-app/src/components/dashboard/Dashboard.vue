@@ -81,18 +81,8 @@ const wealthLabels = {
 
 onMounted(async () => {
   try {
-    const apiUrl = import.meta.env.VITE_API_URL
-    let endpoint
-    
-    if (apiUrl && apiUrl !== '/api') {
-      // Railway: use /api/dashboard-stats
-      endpoint = `${apiUrl}/api/dashboard-stats`
-    } else {
-      // Vercel: use /api/dashboard-stats
-      endpoint = '/api/dashboard-stats'
-    }
-    
-    const response = await fetch(endpoint);
+    const apiUrl = import.meta.env.VITE_API_URL || '/api'
+    const response = await fetch(`${apiUrl}/api/dashboard-stats`);
     const json = await response.json();
     
     if (json.status === 'success') {
