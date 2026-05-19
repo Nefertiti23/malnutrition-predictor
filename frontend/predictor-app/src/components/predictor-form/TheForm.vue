@@ -29,8 +29,17 @@ async function handlePrediction() {
   }
 
   try {
-    const apiUrl = import.meta.env.VITE_API_URL || '/api'
-    const endpoint = apiUrl === '/api' ? `${apiUrl}` : `${apiUrl}/predict`
+    const apiUrl = import.meta.env.VITE_API_URL
+    let endpoint
+    
+    if (apiUrl && apiUrl !== '/api') {
+      // Railway: use /predict endpoint
+      endpoint = `${apiUrl}/predict`
+    } else {
+      // Vercel: use /api endpoint
+      endpoint = '/api'
+    }
+    
     const response = await fetch(endpoint, {
       method: 'POST',
       headers: {
