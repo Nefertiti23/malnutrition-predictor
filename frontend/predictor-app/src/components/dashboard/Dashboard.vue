@@ -81,8 +81,8 @@ const wealthLabels = {
 
 onMounted(async () => {
   try {
-    const apiUrl = import.meta.env.VITE_API_URL || '/api'
-    const response = await fetch(`${apiUrl}/api/dashboard-stats`);
+    const apiUrl = import.meta.env.VITE_API_URL || '/'
+    const response = await fetch(`${apiUrl}/dashboard-stats`);
     const json = await response.json();
     
     if (json.status === 'success') {
