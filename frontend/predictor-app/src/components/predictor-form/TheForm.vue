@@ -29,7 +29,7 @@ async function handlePrediction() {
   }
 
   try {
-    const apiUrl = import.meta.env.VITE_API_URL || '/api'
+    const apiUrl = import.meta.env.VITE_API_URL || '/'
     const response = await fetch(`${apiUrl}`, {
       method: 'POST',
       headers: {
